@@ -1,48 +1,60 @@
 import pytest
 from src.category import Category
+from src.product import Product
 
 
 class TestCategory:
-    """Тесты для класса Category"""
+    """Тесты для класса Category."""
 
-    def test_category_initialization(self):
-        """Тест корректности инициализации объекта категории"""
-        # Arrange
-        name = "Электроника"
-        description = "Технические устройства"
-        products = ["Смартфон", "Ноутбук", "Планшет"]
+    @pytest.fixture
+    def sample_products(self):
+        """Фикстура с тестовыми товарами."""
+        return [
+            Product("Product 1", "Desc 1", 100.0, 5),
+            Product("Product 2", "Desc 2", 200.0, 3),
+            Product("Product 3", "Desc 3", 300.0, 7)
+        ]
 
-        # Act
-        category = Category(name, description, products)
+    @pytest.fixture
+    def sample_category(self, sample_products):
+        """Фикстура с тестовой категорией."""
+        return Category(
+            name="Test Category",
+            description="Test Description",
+            products=sample_products)
 
-        # Assert
-        assert category.name == name
-        assert category.description == description
-        assert category.products == products
+    def test_category_initialization(self, sample_category, sample_products):
+        """Тест корректной инициализации объекта Category."""
+        assert sample_category.name == "Test Category"
+        assert sample_category.description == "Test Description"
+        assert sample_category.products == sample_products
 
-    def test_product_count_property(self):
-        """Тест подсчета количества продуктов в категории"""
-        # Arrange
-        products_list = ["Смартфон", "Ноутбук", "Планшет", "Наушники"]
-        category = Category("Электроника", "Техника", products_list)
+    def test_category_attributes_types(self, sample_category):
+        """Тест типов атрибутов объекта Category."""
+        assert isinstance(sample_category.name, str)
+        assert isinstance(sample_category.description, str)
+        assert isinstance(sample_category.products, list)
 
-        # Act
-        count = category.product_count
+    def test_category_count(self, sample_products):
+        """Тест подсчета количества категорий."""
+        # Сбрасываем счетчик для чистого теста
+        Category.category_count = 0
+        Category.product_count = 0
 
-        # Assert
-        assert count == 4
-        assert category.product_count == len(products_list)
+        Category("Cat1", "Desc1", sample_products[:2])
+        assert Category.category_count == 1
 
-    def test_category_counter_increment(self):
-        """Тест подсчета количества созданных категорий"""
-        # Arrange
-        initial_count = Category.category_count
+        Category("Cat2", "Desc2", sample_products[2:])
+        assert Category.category_count == 2
 
-        # Act - создаем несколько категорий
-        category1 = Category("Одежда", "Модная одежда", ["Футболка", "Джинсы"])
-        category2 = Category("Обувь", "Обувные изделия", ["Кроссовки", "Туфли"])
-        category3 = Category("Аксессуары", "Дополнительные товары", ["Ремень", "Часы"])
+    def test_product_count(self, sample_products):
+        """Тест подсчета общего количества продуктов."""
+        # Сбрасываем счетчик для чистого теста
+        Category.category_count = 0
+        Category.product_count = 0
 
-        # Assert
-        assert Category.category_count == initial_count + 3
-        assert category1.category_count == category2.category_count == category3.category_count
+        Category("Cat1", "Desc1", sample_products[:2])
+        assert Category.product_count == 2
+
+        Category("Cat2", "Desc2", sample_products[2:])
+        assert Category.product_count == 3
