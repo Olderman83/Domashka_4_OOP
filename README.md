@@ -55,6 +55,7 @@ pytest --cov=src tests/
 
 bash
 python main.py
+##Добавлен файл покрытия тестами
 ##Команда
 user.name=Павел Руцкин
 user.email=pavelru163@gmail.com
