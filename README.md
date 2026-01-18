@@ -56,6 +56,12 @@ pytest --cov=src tests/
 bash
 python main.py
 ##Добавлен файл покрытия тестами
+
+##Режим доступа
+Реализован приватный режим доступа к атрибутам клаассов category и products
+Применнены декораторы и методы
+Обновлены тесты для файлов category и products 
+
 ##Команда
 user.name=Павел Руцкин
 user.email=pavelru163@gmail.com

@@ -7,54 +7,51 @@ class TestCategory:
     """Тесты для класса Category."""
 
     @pytest.fixture
-    def sample_products(self):
-        """Фикстура с тестовыми товарами."""
-        return [
-            Product("Product 1", "Desc 1", 100.0, 5),
-            Product("Product 2", "Desc 2", 200.0, 3),
-            Product("Product 3", "Desc 3", 300.0, 7)
-        ]
+    def sample_product(self):
+        """Фикстура для создания тестового продукта"""
+        return Product("Телефон", "Смартфон", 50000.0, 10)
 
     @pytest.fixture
-    def sample_category(self, sample_products):
-        """Фикстура с тестовой категорией."""
+    def sample_category(self, sample_product):
+        """Фикстура для создания тестовой категории"""
         return Category(
-            name="Test Category",
-            description="Test Description",
-            products=sample_products)
+            "Электроника",
+            "Электронные товары",
+            [sample_product]
+        )
 
-    def test_category_initialization(self, sample_category, sample_products):
-        """Тест корректной инициализации объекта Category."""
-        assert sample_category.name == "Test Category"
-        assert sample_category.description == "Test Description"
-        assert sample_category.products == sample_products
+    def test_category_initialization(self, sample_category):
+        """Тест инициализации категории"""
+        assert sample_category.name == "Электроника"
+        assert sample_category.description == "Электронные товары"
+        assert len(sample_category) == 1
 
-    def test_category_attributes_types(self, sample_category):
-        """Тест типов атрибутов объекта Category."""
-        assert isinstance(sample_category.name, str)
-        assert isinstance(sample_category.description, str)
-        assert isinstance(sample_category.products, list)
 
-    def test_category_count(self, sample_products):
-        """Тест подсчета количества категорий."""
-        # Сбрасываем счетчик для чистого теста
-        Category.category_count = 0
-        Category.product_count = 0
+    def test_add_product(self, sample_category, sample_product):
+        """Тест добавления продукта в категорию"""
+        new_product = Product("Ноутбук", "Игровой", 150000.0, 5)
 
-        Category("Cat1", "Desc1", sample_products[:2])
-        assert Category.category_count == 1
+        sample_category.add_product(new_product)
+        assert len(sample_category) == 2
 
-        Category("Cat2", "Desc2", sample_products[2:])
-        assert Category.category_count == 2
+    def test_multiple_products_display(self):
+        """Тест отображения нескольких продуктов"""
+        product1 = Product("Товар 1", "Описание 1", 1000.0, 5)
+        product2 = Product("Товар 2", "Описание 2", 2000.0, 10)
+        product3 = Product("Товар 3", "Описание 3", 3000.0, 15)
 
-    def test_product_count(self, sample_products):
-        """Тест подсчета общего количества продуктов."""
-        # Сбрасываем счетчик для чистого теста
-        Category.category_count = 0
-        Category.product_count = 0
+        category = Category("Категория", "Описание", [product1, product2, product3])
 
-        Category("Cat1", "Desc1", sample_products[:2])
-        assert Category.product_count == 2
+        products_str = category.products
 
-        Category("Cat2", "Desc2", sample_products[2:])
-        assert Category.product_count == 3
+        expected = [
+            "Товар 1, 1000.0 руб. Остаток: 5 шт.\n",
+            "Товар 2, 2000.0 руб. Остаток: 10 шт.\n",
+            "Товар 3, 3000.0 руб. Остаток: 15 шт.\n"
+        ]
+        assert products_str == expected
+
+    def test_add_invalid_product(self, sample_category):
+        """Тест добавления некорректного объекта"""
+        with pytest.raises(TypeError, match="Можно добавлять только объекты класса Product"):
+            sample_category.add_product("не продукт")
