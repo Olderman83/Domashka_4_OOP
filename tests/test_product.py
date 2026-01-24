@@ -23,3 +23,11 @@ class TestProduct:
         product = Product("Test", "Description", 1000.0, 5)
         product.price = 2000.0
         assert product.price == 2000.0
+
+    def test_product_add_method(self):
+        """Тест метода сложения продуктов (__add__)"""
+        product1 = Product("Товар1", "Описание1", 100.0, 5)
+        product2 = Product("Товар2", "Описание2", 200.0, 3)
+
+        total_value = product1 + product2
+        assert total_value == 1100.0

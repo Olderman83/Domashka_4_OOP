@@ -28,8 +28,8 @@ class Category:
         """Геттер для отображения товаров в заданном формате"""
         result = []
         for product in self.__products:
-            result.append(f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n")
-        return result
+            result.append(f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.")
+        return "\n".join(result)
 
     def add_product(self, product: Product):
         """Метод для добавления товара в категорию"""
@@ -38,3 +38,7 @@ class Category:
             Category.product_count += 1
         else:
             raise TypeError("Можно добавлять только объекты класса Product")
+
+    def __str__(self):
+        """Строковое представление продукта"""
+        return f"{self.name}, количество продуктов:len{self.description}"
