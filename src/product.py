@@ -30,3 +30,12 @@ class Product:
             print("Цена не должна быть нулевая или отрицательная")
         else:
             self.__price = new_price
+
+    def __add__(self, other):
+        """Метод сложения продуктов"""
+        price_count = 0
+        quantity_count = 0
+
+        price_count += self.__price
+        quantity_count += self.quantity
+        return (self.__price * self.quantity) + (other.__price * other.quantity)
