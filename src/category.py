@@ -41,4 +41,5 @@ class Category:
 
     def __str__(self):
         """Строковое представление продукта"""
-        return f"{self.name}, количество продуктов:len{self.description}"
+        all_quantity = sum(product.quantity for product in self.__products)
+        return f"{self.name}, общее количество продуктов: {all_quantity} шт."
