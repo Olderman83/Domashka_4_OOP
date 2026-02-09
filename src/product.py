@@ -40,14 +40,16 @@ class Product:
             f"Нельзя складывать {self.__class__.__name__} и {other.__class__.__name__} товары разных категорий."
         )
 
+
 class Smartphone(Product):
-    def __init__(self,name: str, descriptions: str, price: float, quantity: int, efficiency: float, model: str,
+    def __init__(self, name: str, descriptions: str, price: float, quantity: int, efficiency: float, model: str,
                  memory: int, color: str):
         super().__init__(name, descriptions, price, quantity)
         self.efficiency = efficiency
         self.model = model
         self.memory = memory
         self.color = color
+
 
 class LawnGrass(Product):
     def __init__(self, name, description, price, quantity, country, germination_period, color):

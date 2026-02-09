@@ -1,6 +1,6 @@
 import pytest
-from src.product import Product
 from src.product import Product, Smartphone, LawnGrass
+
 
 class TestProduct:
     """Тесты для класса Product"""
