@@ -43,3 +43,11 @@ class TestCategory:
         str_result = str(sample_category)
         assert "Электроника" in str_result
         assert "количество продуктов" in str_result.lower()
+
+    def test_add_product_to_category(self):
+        """Тест добавления продукта в категорию"""
+        category = Category("Категория", "Описание", [])
+        product = Product("Продукт", "Описание", 100.0, 5)
+
+        category.add_product(product)
+        assert len(category) == 1
