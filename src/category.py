@@ -31,13 +31,13 @@ class Category:
             result.append(f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.")
         return "\n".join(result)
 
-    def add_product(self, product: Product):
+    def add_product(self, product):
         """Метод для добавления товара в категорию"""
         if isinstance(product, Product):
             self.__products.append(product)
             Category.product_count += 1
         else:
-            raise TypeError("Можно добавлять только объекты класса Product")
+            raise TypeError("Можно добавлять только объекты класса Product или его наследников")
 
     def __str__(self):
         """Строковое представление продукта"""

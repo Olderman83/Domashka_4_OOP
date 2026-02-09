@@ -1,12 +1,9 @@
-import os
-import sys
 import pytest
 import json
 from unittest.mock import mock_open, patch
 
 from src.utils import load_categories_from_json
 from src.category import Category
-from src.product import Product
 
 
 class TestLoadCategoriesFromJson:

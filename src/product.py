@@ -32,10 +32,28 @@ class Product:
             self.__price = new_price
 
     def __add__(self, other):
-        """Метод сложения продуктов"""
-        price_count = 0
-        quantity_count = 0
+        """Метод сложения продуктов из одинаковых классов"""
+        if type(other) == type(self):
+            return (self.__price * self.quantity) + (other.__price * other.quantity)
 
-        price_count += self.__price
-        quantity_count += self.quantity
-        return (self.__price * self.quantity) + (other.__price * other.quantity)
+        raise TypeError(
+            f"Нельзя складывать {self.__class__.__name__} и {other.__class__.__name__} товары разных категорий."
+        )
+
+
+class Smartphone(Product):
+    def __init__(self, name: str, descriptions: str, price: float, quantity: int, efficiency: float, model: str,
+                 memory: int, color: str):
+        super().__init__(name, descriptions, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+
+class LawnGrass(Product):
+    def __init__(self, name, description, price, quantity, country, germination_period, color):
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
