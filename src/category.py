@@ -1,4 +1,22 @@
 from src.product import Product
+from abc import ABC, abstractmethod
+
+
+class BaseCategory(ABC):
+    """Абстрактный базовый класс для категорий и заказов"""
+
+    @abstractmethod
+    def __init__(self, name: str, description: str):
+        self.name = name
+        self.description = description
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+    @abstractmethod
+    def __len__(self):
+        pass
 
 
 class Category:
