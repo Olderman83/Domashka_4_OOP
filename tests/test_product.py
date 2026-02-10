@@ -1,5 +1,7 @@
 import pytest
 from src.product import Product, Smartphone, LawnGrass
+from src.category import Category
+from src.order import Order
 
 
 class TestProduct:
@@ -53,3 +55,41 @@ class TestProduct:
         grass2 = LawnGrass("Трава 2", "Описание", 600.0, 5,
                            "США", "5 дней", "Темно-зеленый")
         assert grass1 + grass2 == 500.0 * 10 + 600.0 * 5
+
+    def test_base_product_is_abstract(self):
+        """Тест, что BaseProduct является абстрактным классом"""
+        from abc import ABC
+        from src.product import BaseProduct
+
+        assert issubclass(BaseProduct, ABC), "BaseProduct должен быть подклассом ABC"
+
+    def test_product_inherits_from_base_product(self):
+        """Тест, что Product наследуется от BaseProduct"""
+        from src.product import BaseProduct
+
+        assert issubclass(Product, BaseProduct), "Product должен наследоваться от BaseProduct"
+
+    def test_order_creation(self):
+        """Тест создания заказа"""
+        product = Product("Тест", "Описание", 1000.0, 5)
+        order = Order(product, 2)
+
+        assert order.product == product
+        assert order.quantity == 2
+        assert order.total_price == 2000.0
+        assert order.name == "Заказ: Тест"
+        assert "Заказ товара: Описание" in order.description
+
+    def test_order_str(self):
+        """Тест строкового представления заказа"""
+        product = Product("Тест", "Описание", 1000.0, 5)
+        order = Order(product, 2)
+
+        expected = "Заказ: Тест, Количество: 2, Итоговая стоимость: 2000.0 руб."
+        assert str(order) == expected
+
+    def test_product_repr(self):
+        """Тест метода __repr__ для Product"""
+        product = Product("Тест", "Описание", 1000.0, 5)
+        expected = "Product('Тест', 'Описание', 1000.0, 5)"
+        assert repr(product) == expected
