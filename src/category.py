@@ -1,5 +1,6 @@
-from src.product import Product
 from abc import ABC, abstractmethod
+
+from src.product import Product
 
 
 class BaseCategory(ABC):
@@ -21,6 +22,7 @@ class BaseCategory(ABC):
 
 class Category:
     """Класс для представления категорий"""
+
     category_count = 0
     product_count = 0
 
@@ -46,7 +48,9 @@ class Category:
         """Геттер для отображения товаров в заданном формате"""
         result = []
         for product in self.__products:
-            result.append(f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.")
+            result.append(
+                f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт."
+            )
         return "\n".join(result)
 
     def add_product(self, product):
@@ -55,7 +59,9 @@ class Category:
             self.__products.append(product)
             Category.product_count += 1
         else:
-            raise TypeError("Можно добавлять только объекты класса Product или его наследников")
+            raise TypeError(
+                "Можно добавлять только объекты класса Product или его наследников"
+            )
 
     def __str__(self):
         """Строковое представление продукта"""

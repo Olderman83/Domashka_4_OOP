@@ -6,8 +6,10 @@ class Order(BaseCategory):
 
     def __init__(self, product, quantity: int):
         """Метод для инициализации экземпляра класса"""
-        super().__init__(name=f"Заказ: {product.name}",
-                         description=f"Заказ товара: {product.description}")
+        super().__init__(
+            name=f"Заказ: {product.name}",
+            description=f"Заказ товара: {product.description}",
+        )
         self.product = product
         self.quantity = quantity
         self.total_price = product.price * quantity
