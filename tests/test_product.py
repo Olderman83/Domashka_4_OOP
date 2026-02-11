@@ -1,7 +1,5 @@
-import pytest
-from src.product import Product, Smartphone, LawnGrass
-from src.category import Category
 from src.order import Order
+from src.product import LawnGrass, Product, Smartphone
 
 
 class TestProduct:
@@ -42,23 +40,28 @@ class TestProduct:
 
     def test_smartphone_addition(self):
         """Тест сложения смартфонов"""
-        smartphone1 = Smartphone("Samsung", "Описание", 100000.0, 2,
-                                 95.5, "S23", 256, "Черный")
-        smartphone2 = Smartphone("iPhone", "Описание", 150000.0, 3,
-                                 98.2, "15", 512, "Серый")
+        smartphone1 = Smartphone(
+            "Samsung", "Описание", 100000.0, 2, 95.5, "S23", 256, "Черный"
+        )
+        smartphone2 = Smartphone(
+            "iPhone", "Описание", 150000.0, 3, 98.2, "15", 512, "Серый"
+        )
         assert smartphone1 + smartphone2 == 100000.0 * 2 + 150000.0 * 3
 
     def test_lawn_grass_addition(self):
         """Тест сложения газонной травы"""
-        grass1 = LawnGrass("Трава 1", "Описание", 500.0, 10,
-                           "Россия", "7 дней", "Зеленый")
-        grass2 = LawnGrass("Трава 2", "Описание", 600.0, 5,
-                           "США", "5 дней", "Темно-зеленый")
+        grass1 = LawnGrass(
+            "Трава 1", "Описание", 500.0, 10, "Россия", "7 дней", "Зеленый"
+        )
+        grass2 = LawnGrass(
+            "Трава 2", "Описание", 600.0, 5, "США", "5 дней", "Темно-зеленый"
+        )
         assert grass1 + grass2 == 500.0 * 10 + 600.0 * 5
 
     def test_base_product_is_abstract(self):
         """Тест, что BaseProduct является абстрактным классом"""
         from abc import ABC
+
         from src.product import BaseProduct
 
         assert issubclass(BaseProduct, ABC), "BaseProduct должен быть подклассом ABC"
@@ -67,7 +70,9 @@ class TestProduct:
         """Тест, что Product наследуется от BaseProduct"""
         from src.product import BaseProduct
 
-        assert issubclass(Product, BaseProduct), "Product должен наследоваться от BaseProduct"
+        assert issubclass(
+            Product, BaseProduct
+        ), "Product должен наследоваться от BaseProduct"
 
     def test_order_creation(self):
         """Тест создания заказа"""

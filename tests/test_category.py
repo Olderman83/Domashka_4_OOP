@@ -1,4 +1,5 @@
 import pytest
+
 from src.category import Category
 from src.product import Product
 
@@ -14,11 +15,7 @@ class TestCategory:
     @pytest.fixture
     def sample_category(self, sample_product):
         """Фикстура для создания тестовой категории"""
-        return Category(
-            "Электроника",
-            "Электронные товары",
-            [sample_product]
-        )
+        return Category("Электроника", "Электронные товары", [sample_product])
 
     def test_category_initialization(self, sample_category):
         """Тест инициализации категории"""
@@ -35,7 +32,9 @@ class TestCategory:
 
     def test_add_invalid_product(self, sample_category):
         """Тест добавления некорректного объекта"""
-        with pytest.raises(TypeError, match="Можно добавлять только объекты класса Product"):
+        with pytest.raises(
+            TypeError, match="Можно добавлять только объекты класса Product"
+        ):
             sample_category.add_product("не продукт")
 
     def test_str_method(self, sample_category):
