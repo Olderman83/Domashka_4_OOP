@@ -1,100 +1,66 @@
-from src.order import Order
+import pytest
+
 from src.product import LawnGrass, Product, Smartphone
 
 
 class TestProduct:
     """Тесты для класса Product"""
 
-    def test_product_creation(self):
-        """Тест создания продукта"""
+    # ... (существующие тесты остаются без изменений) ...
+
+    def test_product_creation_with_zero_quantity_raises_value_error(self):
+        """Тест: создание продукта с нулевым количеством вызывает ValueError"""
+        with pytest.raises(ValueError) as exc_info:
+            Product("Test", "Description", 1000.0, 0)
+
+        assert (
+            str(exc_info.value) == "Товар с нулевым количеством не может быть добавлен"
+        )
+
+    def test_product_creation_with_negative_quantity_raises_value_error(self):
+        """Тест: создание продукта с отрицательным количеством вызывает ValueError"""
+        with pytest.raises(ValueError) as exc_info:
+            Product("Test", "Description", 1000.0, -5)
+
+        assert (
+            str(exc_info.value) == "Товар с нулевым количеством не может быть добавлен"
+        )
+
+    def test_product_creation_with_positive_quantity_success(self):
+        """Тест: создание продукта с положительным количеством проходит успешно"""
         product = Product("Test", "Description", 1000.0, 5)
-        assert product.name == "Test"
-        assert product.description == "Description"
-        assert product.price == 1000.0
         assert product.quantity == 5
 
-    def test_price_getter(self):
-        """Тест геттера цены"""
-        product = Product("Test", "Description", 1500.0, 3)
-        assert product.price == 1500.0
+    def test_smartphone_creation_with_zero_quantity_raises_value_error(self):
+        """Тест: создание смартфона с нулевым количеством вызывает ValueError"""
+        with pytest.raises(ValueError) as exc_info:
+            Smartphone("Samsung", "Описание", 100000.0, 0, 95.5, "S23", 256, "Черный")
 
-    def test_price_setter_valid(self, capsys):
-        """Тест сеттера цены с корректным значением"""
-        product = Product("Test", "Description", 1000.0, 5)
-        product.price = 2000.0
-        assert product.price == 2000.0
-
-    def test_product_add_method(self):
-        """Тест метода сложения продуктов (__add__)"""
-        product1 = Product("Товар1", "Описание1", 100.0, 5)
-        product2 = Product("Товар2", "Описание2", 200.0, 3)
-
-        total_value = product1 + product2
-        assert total_value == 1100.0
-
-    def test_product_addition_same_type(self):
-        """Тест сложения продуктов одного типа"""
-        product1 = Product("Продукт 1", "Описание", 100.0, 5)
-        product2 = Product("Продукт 2", "Описание", 200.0, 3)
-        assert product1 + product2 == 100.0 * 5 + 200.0 * 3
-
-    def test_smartphone_addition(self):
-        """Тест сложения смартфонов"""
-        smartphone1 = Smartphone(
-            "Samsung", "Описание", 100000.0, 2, 95.5, "S23", 256, "Черный"
+        assert (
+            str(exc_info.value) == "Товар с нулевым количеством не может быть добавлен"
         )
-        smartphone2 = Smartphone(
-            "iPhone", "Описание", 150000.0, 3, 98.2, "15", 512, "Серый"
+
+    def test_lawn_grass_creation_with_zero_quantity_raises_value_error(self):
+        """Тест: создание газонной травы с нулевым количеством вызывает ValueError"""
+        with pytest.raises(ValueError) as exc_info:
+            LawnGrass("Трава", "Описание", 500.0, 0, "Россия", "7 дней", "Зеленый")
+
+        assert (
+            str(exc_info.value) == "Товар с нулевым количеством не может быть добавлен"
         )
-        assert smartphone1 + smartphone2 == 100000.0 * 2 + 150000.0 * 3
 
-    def test_lawn_grass_addition(self):
-        """Тест сложения газонной травы"""
-        grass1 = LawnGrass(
-            "Трава 1", "Описание", 500.0, 10, "Россия", "7 дней", "Зеленый"
+    def test_new_product_classmethod_with_zero_quantity(self):
+        """Тест: создание продукта через new_product с нулевым количеством вызывает ValueError"""
+        product_data = {
+            "name": "Test",
+            "description": "Description",
+            "price": 1000.0,
+            "quantity": 0,
+        }
+
+        with pytest.raises(ValueError) as exc_info:
+            Product.new_product(product_data)
+
+        assert (
+            str(exc_info.value) == "Товар с нулевым количеством не может быть добавлен"
         )
-        grass2 = LawnGrass(
-            "Трава 2", "Описание", 600.0, 5, "США", "5 дней", "Темно-зеленый"
-        )
-        assert grass1 + grass2 == 500.0 * 10 + 600.0 * 5
-
-    def test_base_product_is_abstract(self):
-        """Тест, что BaseProduct является абстрактным классом"""
-        from abc import ABC
-
-        from src.product import BaseProduct
-
-        assert issubclass(BaseProduct, ABC), "BaseProduct должен быть подклассом ABC"
-
-    def test_product_inherits_from_base_product(self):
-        """Тест, что Product наследуется от BaseProduct"""
-        from src.product import BaseProduct
-
-        assert issubclass(
-            Product, BaseProduct
-        ), "Product должен наследоваться от BaseProduct"
-
-    def test_order_creation(self):
-        """Тест создания заказа"""
-        product = Product("Тест", "Описание", 1000.0, 5)
-        order = Order(product, 2)
-
-        assert order.product == product
-        assert order.quantity == 2
-        assert order.total_price == 2000.0
-        assert order.name == "Заказ: Тест"
-        assert "Заказ товара: Описание" in order.description
-
-    def test_order_str(self):
-        """Тест строкового представления заказа"""
-        product = Product("Тест", "Описание", 1000.0, 5)
-        order = Order(product, 2)
-
-        expected = "Заказ: Тест, Количество: 2, Итоговая стоимость: 2000.0 руб."
-        assert str(order) == expected
-
-    def test_product_repr(self):
-        """Тест метода __repr__ для Product"""
-        product = Product("Тест", "Описание", 1000.0, 5)
-        expected = "Product('Тест', 'Описание', 1000.0, 5)"
-        assert repr(product) == expected

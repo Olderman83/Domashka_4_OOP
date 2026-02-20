@@ -50,3 +50,42 @@ class TestCategory:
 
         category.add_product(product)
         assert len(category) == 1
+
+    def test_middle_price_with_products(self):
+        """Тест метода middle_price с несколькими товарами"""
+        product1 = Product("Товар 1", "Описание 1", 100.0, 5)
+        product2 = Product("Товар 2", "Описание 2", 200.0, 3)
+        product3 = Product("Товар 3", "Описание 3", 300.0, 7)
+
+        category = Category(
+            "Тестовая категория", "Описание", [product1, product2, product3]
+        )
+
+        expected_middle_price = (100.0 + 200.0 + 300.0) / 3
+        assert category.middle_price() == expected_middle_price
+
+    def test_middle_price_with_one_product(self):
+        """Тест метода middle_price с одним товаром"""
+        product = Product("Товар", "Описание", 150.0, 10)
+        category = Category("Тестовая категория", "Описание", [product])
+
+        assert category.middle_price() == 150.0
+
+    def test_middle_price_with_empty_category(self):
+        """Тест метода middle_price с пустой категорией"""
+        category = Category("Пустая категория", "Описание", [])
+
+        assert category.middle_price() == 0
+
+    def test_middle_price_after_adding_products(self):
+        """Тест метода middle_price после добавления товаров"""
+        category = Category("Тестовая категория", "Описание", [])
+        assert category.middle_price() == 0
+
+        product1 = Product("Товар 1", "Описание 1", 100.0, 5)
+        category.add_product(product1)
+        assert category.middle_price() == 100.0
+
+        product2 = Product("Товар 2", "Описание 2", 200.0, 3)
+        category.add_product(product2)
+        assert category.middle_price() == 150.0
