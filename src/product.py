@@ -45,6 +45,8 @@ class Product(ReprMixin, BaseProduct):
 
     def __init__(self, name: str, description: str, price: float, quantity: int):
         """Метод для инициализации экземпляра класса. Задаем значения атрибутам экземпляра."""
+        if quantity <= 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
         self.name = name
         self.description = description
         self.__price = price

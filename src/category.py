@@ -67,3 +67,17 @@ class Category:
         """Строковое представление продукта"""
         all_quantity = sum(product.quantity for product in self.__products)
         return f"{self.name}, общее количество продуктов: {all_quantity} шт."
+
+    def middle_price(self):
+        """
+        Метод для подсчета среднего ценника всех товаров в категории.
+
+        Returns:
+            float: Средняя цена товаров в категории. Если категория пуста, возвращает 0.
+        """
+        try:
+            total_price = sum(product.price for product in self.__products)
+            return total_price / len(self.__products)
+        except ZeroDivisionError:
+            # Обрабатываем случай, когда в категории нет товаров
+            return 0
